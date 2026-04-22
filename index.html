@@ -3,130 +3,349 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tempo Music</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Tempo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS STYLING - FULL PREMIUM GLASSMORPHISM */
+        :root {
+            --primary: #bc13fe;
+            --secondary: #5a189a;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --bg: #050508;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: var(--bg); 
+            color: white; 
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glow-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 0% 0%, rgba(188, 19, 254, 0.12), transparent 50%);
+            z-index: -1;
+        }
+
+        /* Navbar */
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(15px); border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .nav-left { display: flex; align-items: center; gap: 20px; }
+        .menu-btn { 
+            background: none; border: none; color: white; 
+            font-size: 1.5rem; cursor: pointer; transition: 0.3s;
+        }
+        .menu-btn:hover { color: var(--primary); }
+
+        .logo { display: flex; align-items: center; font-weight: 800; font-size: 1.2rem; letter-spacing: 1px; }
+        .logo img { width: 38px; border-radius: 50%; margin-right: 10px; border: 2px solid var(--primary); }
+        .logo span { color: var(--primary); margin-left: 5px; }
+
+        .login-btn { 
+            background: #5865F2; color: white; border: none; padding: 10px 20px;
+            border-radius: 8px; cursor: pointer; font-weight: bold; display: flex; align-items: center; gap: 8px;
+        }
+
+        /* Sidebar Menu */
+        .sidebar {
+            position: fixed; left: -300px; top: 0; width: 280px; height: 100%;
+            background: rgba(10, 10, 15, 0.95); backdrop-filter: blur(20px);
+            z-index: 2000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 60px 20px; border-right: 1px solid var(--border);
+        }
+        .sidebar.active { left: 0; }
+        .close-sidebar { position: absolute; right: 20px; top: 20px; font-size: 2rem; color: white; cursor: pointer; }
+        
+        .sidebar-links a {
+            display: flex; align-items: center; gap: 15px; color: #ccc;
+            text-decoration: none; padding: 15px; margin-bottom: 10px;
+            border-radius: 12px; font-weight: 500; transition: 0.3s;
+        }
+        .sidebar-links a:hover { background: var(--primary); color: white; transform: translateX(10px); }
+
+        /* Stats Bar */
+        .container { padding: 40px 8%; }
+        .stats-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 20px; margin-bottom: 60px;
+        }
+        .stat-card { 
+            background: var(--glass); padding: 25px; border-radius: 15px; 
+            text-align: center; border: 1px solid var(--border);
+        }
+        .stat-card i { font-size: 2rem; color: var(--primary); margin-bottom: 10px; }
+        .stat-card h3 { font-size: 1.5rem; margin-bottom: 5px; }
+
+        /* Sections */
+        .section { margin-bottom: 80px; scroll-margin-top: 100px; }
+        .title { font-size: 2rem; text-align: center; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px; }
+        .title span { color: var(--primary); }
+
+        /* About Card */
+        .about-content { 
+            background: var(--glass); padding: 40px; border-radius: 20px; 
+            border: 1px solid var(--border); text-align: center; line-height: 1.8;
+        }
+
+        /* Commands Grid */
+        .cmd-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; 
+        }
+        .cmd-box { background: var(--glass); padding: 30px; border-radius: 15px; border: 1px solid var(--border); }
+        .cmd-box h3 { color: var(--primary); margin-bottom: 15px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .cmd-box ul { list-style: none; }
+        .cmd-box li { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.9rem; }
+        code { color: #00ffcc; background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; }
+
+        /* Premium Tiers */
+        .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .price-card { 
+            background: var(--glass); padding: 40px; border-radius: 20px; 
+            text-align: center; border: 1px solid var(--border); transition: 0.3s;
+            position: relative;
+        }
+        .price-card.featured { border: 2px solid var(--primary); box-shadow: 0 0 20px rgba(188, 19, 254, 0.2); }
+        .price-card:hover { transform: translateY(-10px); }
+        .badge { position: absolute; top: 15px; right: 15px; background: var(--primary); font-size: 0.7rem; padding: 5px 12px; border-radius: 20px; }
+        .price-card h2 { margin-bottom: 10px; font-size: 1.8rem; }
+        .amount { font-size: 2.5rem; font-weight: 800; margin-bottom: 20px; color: var(--primary); }
+        .amount span { font-size: 1rem; color: #aaa; }
+        .benefits { text-align: left; margin-bottom: 30px; min-height: 120px; }
+        .benefits li { list-style: none; margin-bottom: 10px; font-size: 0.9rem; }
+        .benefits i { color: #00ffcc; margin-right: 10px; }
+        .buy-btn { 
+            width: 100%; padding: 15px; border: none; border-radius: 10px; 
+            background: var(--primary); color: white; font-weight: bold; cursor: pointer;
+        }
+
+        /* Modal */
+        .modal { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 3000;
+        }
+        .modal-content { 
+            width: 90%; max-width: 450px; background: #0a0a0f; 
+            padding: 40px; border-radius: 20px; border: 1px solid var(--primary); 
+        }
+        input { width: 100%; padding: 12px; margin-bottom: 15px; background: var(--glass); border: 1px solid var(--border); color: white; border-radius: 8px; }
+        .pay-methods { display: flex; gap: 10px; margin-bottom: 20px; }
+        .pay-item { flex: 1; padding: 15px; text-align: center; border-radius: 10px; cursor: pointer; border: 1px solid var(--border); transition: 0.3s; }
+        .pay-item.active { border-color: var(--primary); background: rgba(188, 19, 254, 0.1); }
+        .pay-item img { width: 35px; }
+
+        .footer { text-align: center; padding: 60px 0; border-top: 1px solid var(--border); margin-top: 50px; opacity: 0.7; }
+        .footer span { color: var(--primary); font-weight: bold; }
+    </style>
 </head>
 <body>
+
     <div class="glow-bg"></div>
 
-    <div class="stats-bar glass">
-        <div class="stat-item"><i class="fas fa-server"></i> <span id="serverCount">1,250+</span> Servers</div>
-        <div class="stat-item"><i class="fas fa-users"></i> <span id="userCount">500K+</span> Users</div>
-        <div class="stat-item"><i class="fas fa-terminal"></i> <span id="cmdCount">45+</span> Commands</div>
+    <div id="sidebar" class="sidebar">
+        <span class="close-sidebar" onclick="toggleSidebar()">&times;</span>
+        <div class="sidebar-links">
+            <a href="#about" onclick="toggleSidebar()"><i class="fas fa-user-shield"></i> About Bot</a>
+            <a href="#commands" onclick="toggleSidebar()"><i class="fas fa-terminal"></i> Commands</a>
+            <a href="#premium" onclick="toggleSidebar()"><i class="fas fa-gem"></i> Premium Plans</a>
+            <a href="YOUR_INVITE_LINK" target="_blank"><i class="fas fa-plus-circle"></i> Invite Bot</a>
+        </div>
     </div>
 
-    <nav class="navbar glass">
-        <div class="logo">
-            <img src="https://cdn.discordapp.com/avatars/1446732732754296842/315b7242f57075da50225275b8343017.webp?size=256" id="mainLogo" class="bot-logo-img"> 
-            TEMPO <span>MUSIC</span>
-        </div>
-        <div class="nav-links">
-            <a href="#commands">Commands</a>
-            <a href="#premium-section">Premium</a>
-            <button id="loginBtn" class="login-btn"><i class="fab fa-discord"></i> Login</button>
-            <div id="userProfile" class="user-nav" style="display: none;">
-                <img id="userAvatar" src="" class="nav-avatar">
-                <span id="userName"></span>
-                <button id="logoutBtn" class="logout-link"><i class="fas fa-sign-out-alt"></i></button>
+    <nav class="navbar">
+        <div class="nav-left">
+            <button class="menu-btn" onclick="toggleSidebar()"><i class="fas fa-bars-staggered"></i></button>
+            <div class="logo">
+                <img src="https://cdn.discordapp.com/embed/avatars/2.png" alt="Logo">
+                TEMPO<span>MUSIC</span>
             </div>
+        </div>
+        <div class="nav-right">
+            <button class="login-btn"><i class="fab fa-discord"></i> Login</button>
         </div>
     </nav>
 
     <div class="container">
-        <section id="dashboard" class="section-padding" style="display: none;">
-            <h2 class="title">Manage Your Servers</h2>
-            <div id="serverList" class="server-grid">
-                </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-server"></i>
+                <h3 id="servers">1,250+</h3>
+                <p>Servers</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <h3 id="users">850K+</h3>
+                <p>Users</p>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-music"></i>
+                <h3 id="cmds">50+</h3>
+                <p>Commands</p>
+            </div>
+        </div>
+
+        <section id="about" class="section">
+            <h2 class="title">About <span>Tempo Music</span></h2>
+            <div class="about-content">
+                <p>Tempo Music is a state-of-the-art Discord bot crafted for the ultimate musical experience. We provide lag-free streaming, high-fidelity 4K audio, and a suite of professional filters. Whether you are hosting a party or relaxing alone, Tempo ensures your rhythm never breaks.</p>
+            </div>
         </section>
 
-        <section id="commands" class="section-padding">
-            <h2 class="title">Command Explorer</h2>
+        <section id="commands" class="section">
+            <h2 class="title">Bot <span>Commands</span></h2>
             <div class="cmd-grid">
-                <div class="cmd-card glass">
-                    <h3><i class="fas fa-play-circle"></i> Music Playback</h3>
+                <div class="cmd-box">
+                    <h3>Playback</h3>
                     <ul>
-                        <li><code>/play</code> <span>Play music from URL or name</span></li>
-                        <li><code>/skip</code> <span>Skip current track</span></li>
-                        <li><code>/stop</code> <span>Clear queue and leave</span></li>
-                        <li><code>/nowplaying</code> <span>Show current song info</span></li>
+                        <li><code>/play [song]</code> <span>Stream any track</span></li>
+                        <li><code>/skip</code> <span>Next song in queue</span></li>
+                        <li><code>/queue</code> <span>View pending list</span></li>
                     </ul>
                 </div>
-                <div class="cmd-card glass">
-                    <h3><i class="fas fa-sliders-h"></i> Configuration</h3>
+                <div class="cmd-box">
+                    <h3>Premium Only</h3>
                     <ul>
-                        <li><code>/setup</code> <span>Initialize bot in server</span></li>
-                        <li><code>/prefix</code> <span>Set custom bot prefix</span></li>
-                        <li><code>/djrole</code> <span>Set music moderator role</span></li>
-                        <li><code>/language</code> <span>Change bot language</span></li>
+                        <li><code>/24-7</code> <span>Never leaves voice</span></li>
+                        <li><code>/bassboost</code> <span>Heavy bass filter</span></li>
+                        <li><code>/volume [0-200]</code> <span>Loudness control</span></li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <section id="premium-section" class="section-padding">
-            <h2 class="title">Exclusive Features</h2>
-            <div class="premium-tabs-container">
-                <div class="price-container">
-                    <div class="price-card glass">
-                        <h3>Basic</h3>
-                        <div class="price">$2.99<span>/mo</span></div>
-                        <ul class="benefit-list">
-                            <li><i class="fas fa-headset"></i> High Quality Audio</li>
-                            <li><i class="fas fa-clock"></i> 24/7 Voice Support</li>
-                        </ul>
-                        <button class="order-btn-premium" onclick="openOrderModal('Basic', '$2.99')">Select Plan</button>
-                    </div>
-                    <div class="price-card glass premium-border">
-                        <div class="badge">Popular</div>
-                        <h3>Pro</h3>
-                        <div class="price">$5.99<span>/mo</span></div>
-                        <ul class="benefit-list">
-                            <li><i class="fas fa-bolt"></i> All Basic Features</li>
-                            <li><i class="fas fa-magic"></i> Custom Audio Filters</li>
-                            <li><i class="fas fa-infinity"></i> Unlimited Queue</li>
-                        </ul>
-                        <button class="order-btn-premium" onclick="openOrderModal('Pro', '$5.99')">Select Plan</button>
-                    </div>
-                    <div class="price-card glass">
-                        <h3>Custom</h3>
-                        <div class="price">$14.99<span>/mo</span></div>
-                        <ul class="benefit-list">
-                            <li><i class="fas fa-code"></i> Full Bot Branding</li>
-                            <li><i class="fas fa-palette"></i> Custom Name & Logo</li>
-                            <li><i class="fas fa-shield-virus"></i> Priority Support</li>
-                        </ul>
-                        <button class="order-btn-premium" onclick="openOrderModal('Full Customize', '$14.99')">Select Plan</button>
-                    </div>
+        <section id="premium" class="section">
+            <h2 class="title">Premium <span>Tiers</span></h2>
+            <div class="price-grid">
+                <div class="price-card">
+                    <h2>Basic</h2>
+                    <div class="amount">$2.99<span>/mo</span></div>
+                    <ul class="benefits">
+                        <li><i class="fas fa-check"></i> High Quality Audio</li>
+                        <li><i class="fas fa-check"></i> 24/7 Voice Support</li>
+                    </ul>
+                    <button class="buy-btn" onclick="openOrder('Basic')">Select Plan</button>
+                </div>
+                <div class="price-card featured">
+                    <div class="badge">Most Popular</div>
+                    <h2>Pro</h2>
+                    <div class="amount">$5.99<span>/mo</span></div>
+                    <ul class="benefits">
+                        <li><i class="fas fa-check"></i> 4K Fidelity Audio</li>
+                        <li><i class="fas fa-check"></i> Advanced Filters</li>
+                        <li><i class="fas fa-check"></i> No Command Limits</li>
+                    </ul>
+                    <button class="buy-btn" onclick="openOrder('Pro')">Select Plan</button>
+                </div>
+                <div class="price-card">
+                    <h2>Customize</h2>
+                    <div class="amount">$14.99<span>/mo</span></div>
+                    <ul class="benefits">
+                        <li><i class="fas fa-check"></i> Custom Bot Name/Logo</li>
+                        <li><i class="fas fa-check"></i> Priority Performance</li>
+                        <li><i class="fas fa-check"></i> Dedicated Support</li>
+                    </ul>
+                    <button class="buy-btn" onclick="openOrder('Customize')">Select Plan</button>
                 </div>
             </div>
         </section>
+
+        <footer class="footer">
+            <p>Copyright &copy; 2026 | Developed by <span>Hridoy Hasan</span></p>
+        </footer>
     </div>
 
     <div id="orderModal" class="modal">
-        <div class="modal-content glass">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h2 id="modalTitle">Premium Checkout</h2>
+        <div class="modal-content">
+            <h2 id="planName" style="margin-bottom: 20px; color: var(--primary);">Order</h2>
             <form id="orderForm">
-                <input type="text" id="serverId" placeholder="Enter Discord Server ID" required>
+                <input type="text" id="guildId" placeholder="Discord Server ID" required>
+                <input type="url" id="invite" placeholder="Server Invite Link" required>
+                
+                <p style="margin-bottom: 10px; font-size: 0.9rem;">Select Payment Method:</p>
                 <div class="pay-methods">
-                    <div class="pay-item" id="ltcBtn"><img src="https://cryptologos.cc/logos/litecoin-ltc-logo.svg"> <span>LTC</span></div>
-                    <div class="pay-item" id="usdtBtn"><img src="https://cryptologos.cc/logos/tether-usdt-logo.svg"> <span>USDT</span></div>
+                    <div class="pay-item" id="ltc" onclick="setPay('LTC')"><img src="https://cryptologos.cc/logos/litecoin-ltc-logo.svg" alt="LTC"></div>
+                    <div class="pay-item" id="usdt" onclick="setPay('USDT')"><img src="https://cryptologos.cc/logos/tether-usdt-logo.svg" alt="USDT"></div>
                 </div>
-                <div id="addrBox" class="address-box glass" style="display:none;">
-                    <p id="methodName"></p>
-                    <code id="walletAddr"></code>
+
+                <div id="walletInfo" style="display:none; background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 20px; text-align: center;">
+                    <p id="payTitle" style="font-size: 0.8rem;"></p>
+                    <code id="address" style="word-break: break-all; color: #00ffcc; font-size: 0.75rem;"></code>
                 </div>
-                <button type="submit" class="final-btn">Submit Order</button>
+
+                <button type="submit" class="buy-btn">Submit Order</button>
+                <button type="button" onclick="closeOrder()" style="background:none; border:none; color:#ff4d4d; margin-top:15px; cursor:pointer; width:100%;">Cancel</button>
             </form>
         </div>
     </div>
 
-    <footer class="dev-mark">
-        <p>Copyright &copy; 2026 | Developed by <span>Hridoy Hasan</span></p>
-    </footer>
+    <script>
+        // JAVASCRIPT LOGIC
+        const WEBHOOK_URL = "YOUR_DISCORD_WEBHOOK_HERE";
+        const LTC_WAL = "YOUR_LTC_ADDRESS";
+        const USDT_WAL = "YOUR_USDT_ADDRESS";
 
-    <script type="module" src="script.js"></script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+
+        let selectedPlan = "";
+        let selectedPay = "";
+
+        function openOrder(plan) {
+            selectedPlan = plan;
+            document.getElementById('planName').innerText = "Order: " + plan;
+            document.getElementById('orderModal').style.display = 'flex';
+        }
+
+        function closeOrder() {
+            document.getElementById('orderModal').style.display = 'none';
+        }
+
+        function setPay(method) {
+            selectedPay = method;
+            document.querySelectorAll('.pay-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(method.toLowerCase()).classList.add('active');
+            
+            document.getElementById('walletInfo').style.display = 'block';
+            document.getElementById('payTitle').innerText = "Send Payment to " + method + ":";
+            document.getElementById('address').innerText = (method === 'LTC') ? LTC_WAL : USDT_WAL;
+        }
+
+        document.getElementById('orderForm').onsubmit = async (e) => {
+            e.preventDefault();
+            if(!selectedPay) return alert("Select payment method!");
+
+            const payload = {
+                content: "@here **New Premium Order!**",
+                embeds: [{
+                    title: "Tempo Premium Order",
+                    color: 12325886,
+                    fields: [
+                        { name: "Plan", value: selectedPlan, inline: true },
+                        { name: "Method", value: selectedPay, inline: true },
+                        { name: "Server ID", value: document.getElementById('guildId').value },
+                        { name: "Invite", value: document.getElementById('invite').value }
+                    ],
+                    footer: { text: "System by Hridoy Hasan" }
+                }]
+            };
+
+            await fetch(WEBHOOK_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload)
+            });
+
+            alert("Order submitted to our team!");
+            closeOrder();
+        };
+    </script>
 </body>
-                            </html>
-                            
+        </html>
+        
