@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tempo Music | Premium Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="glow-bg"></div>
+
+    <nav class="navbar glass">
+        <div class="logo">
+            <img src="YOUR_LOGO_URL_HERE" id="mainLogo" class="bot-logo-img"> 
+            TEMPO <span>MUSIC</span>
+        </div>
+        <div class="nav-right" id="authSection">
+            <button id="loginBtn" class="login-btn"><i class="fab fa-discord"></i> Login</button>
+            <div id="userProfile" class="user-nav" style="display: none;">
+                <img id="userAvatar" src="" class="nav-avatar">
+                <span id="userName"></span>
+                <button id="logoutBtn" class="logout-link"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <header class="hero">
+            <h1>The Ultimate <span class="highlight">Rhythm</span></h1>
+            <p>Experience high-fidelity audio with Tempo Music Bot.</p>
+        </header>
+
+        <section id="commands" class="section-padding">
+            <h2 class="title">Bot Commands</h2>
+            <div class="cmd-grid">
+                <div class="cmd-card glass">
+                    <h3><i class="fas fa-music"></i> Music</h3>
+                    <ul>
+                        <li><code>/play</code> <span>Play any song</span></li>
+                        <li><code>/skip</code> <span>Skip track</span></li>
+                        <li><code>/queue</code> <span>Check queue</span></li>
+                    </ul>
+                </div>
+                <div class="cmd-card glass">
+                    <h3><i class="fas fa-crown"></i> Premium</h3>
+                    <ul>
+                        <li><code>/24-7</code> <span>Always in voice</span></li>
+                        <li><code>/filter</code> <span>Audio effects</span></li>
+                        <li><code>/volume</code> <span>Boost volume</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="premium" class="section-padding">
+            <h2 class="title">Get Premium</h2>
+            <div class="price-container">
+                <div class="price-card glass premium-border">
+                    <div class="badge">VVIP</div>
+                    <h3>Premium Plan</h3>
+                    <div class="price">$5.00<span>/mo</span></div>
+                    <ul class="benefit-list">
+                        <li><i class="fas fa-check"></i> High-Quality Audio</li>
+                        <li><i class="fas fa-check"></i> No Commands Limit</li>
+                        <li><i class="fas fa-check"></i> 24/7 Playback</li>
+                    </ul>
+                    <button class="order-btn-premium" onclick="openModal()">Order Now</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="faq" class="section-padding">
+            <h2 class="title">FAQ</h2>
+            <details class="glass"><summary>Activation Time?</summary><p>Orders are verified manually within 1-2 hours.</p></details>
+            <details class="glass"><summary>Payment methods?</summary><p>We accept LTC and USDT (TRC20).</p></details>
+        </section>
+
+        <footer class="dev-mark">
+            <p>Developed with by <span>Hridoy Hasan</span></p>
+        </footer>
+    </div>
+
+    <div id="orderModal" class="modal">
+        <div class="modal-content glass">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2><i class="fas fa-shopping-cart"></i> Premium Order</h2>
+            <form id="orderForm">
+                <input type="text" id="serverId" placeholder="Discord Server ID" required>
+                <input type="url" id="inviteLink" placeholder="Server Invite Link" required>
+                
+                <div class="pay-methods">
+                    <div class="pay-item" id="ltcBtn">
+                        <img src="https://cryptologos.cc/logos/litecoin-ltc-logo.svg"> <span>LTC</span>
+                    </div>
+                    <div class="pay-item" id="usdtBtn">
+                        <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg"> <span>USDT</span>
+                    </div>
+                </div>
+
+                <div id="addrBox" class="address-box glass" style="display:none;">
+                    <p id="methodName"></p>
+                    <code id="walletAddr"></code>
+                </div>
+                <button type="submit" class="final-btn">Submit via Discord</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
+
