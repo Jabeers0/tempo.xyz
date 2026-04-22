@@ -3,19 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tempo Music | Premium Dashboard</title>
+    <title>Tempo Music</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="glow-bg"></div>
 
+    <div class="stats-bar glass">
+        <div class="stat-item"><i class="fas fa-server"></i> <span id="serverCount">1,250+</span> Servers</div>
+        <div class="stat-item"><i class="fas fa-users"></i> <span id="userCount">500K+</span> Users</div>
+        <div class="stat-item"><i class="fas fa-terminal"></i> <span id="cmdCount">45+</span> Commands</div>
+    </div>
+
     <nav class="navbar glass">
         <div class="logo">
-            <img src="YOUR_LOGO_URL_HERE" id="mainLogo" class="bot-logo-img"> 
+            <img src="YOUR_LOGO_LINK" id="mainLogo" class="bot-logo-img"> 
             TEMPO <span>MUSIC</span>
         </div>
-        <div class="nav-right" id="authSection">
+        <div class="nav-links">
+            <a href="#commands">Commands</a>
+            <a href="#premium-section">Premium</a>
             <button id="loginBtn" class="login-btn"><i class="fab fa-discord"></i> Login</button>
             <div id="userProfile" class="user-nav" style="display: none;">
                 <img id="userAvatar" src="" class="nav-avatar">
@@ -26,88 +34,99 @@
     </nav>
 
     <div class="container">
-        <header class="hero">
-            <h1>The Ultimate <span class="highlight">Rhythm</span></h1>
-            <p>Experience high-fidelity audio with Tempo Music Bot.</p>
-        </header>
+        <section id="dashboard" class="section-padding" style="display: none;">
+            <h2 class="title">Manage Your Servers</h2>
+            <div id="serverList" class="server-grid">
+                </div>
+        </section>
 
         <section id="commands" class="section-padding">
-            <h2 class="title">Bot Commands</h2>
+            <h2 class="title">Command Explorer</h2>
             <div class="cmd-grid">
                 <div class="cmd-card glass">
-                    <h3><i class="fas fa-music"></i> Music</h3>
+                    <h3><i class="fas fa-play-circle"></i> Music Playback</h3>
                     <ul>
-                        <li><code>/play</code> <span>Play any song</span></li>
-                        <li><code>/skip</code> <span>Skip track</span></li>
-                        <li><code>/queue</code> <span>Check queue</span></li>
+                        <li><code>/play</code> <span>Play music from URL or name</span></li>
+                        <li><code>/skip</code> <span>Skip current track</span></li>
+                        <li><code>/stop</code> <span>Clear queue and leave</span></li>
+                        <li><code>/nowplaying</code> <span>Show current song info</span></li>
                     </ul>
                 </div>
                 <div class="cmd-card glass">
-                    <h3><i class="fas fa-crown"></i> Premium</h3>
+                    <h3><i class="fas fa-sliders-h"></i> Configuration</h3>
                     <ul>
-                        <li><code>/24-7</code> <span>Always in voice</span></li>
-                        <li><code>/filter</code> <span>Audio effects</span></li>
-                        <li><code>/volume</code> <span>Boost volume</span></li>
+                        <li><code>/setup</code> <span>Initialize bot in server</span></li>
+                        <li><code>/prefix</code> <span>Set custom bot prefix</span></li>
+                        <li><code>/djrole</code> <span>Set music moderator role</span></li>
+                        <li><code>/language</code> <span>Change bot language</span></li>
                     </ul>
                 </div>
             </div>
         </section>
 
-        <section id="premium" class="section-padding">
-            <h2 class="title">Get Premium</h2>
-            <div class="price-container">
-                <div class="price-card glass premium-border">
-                    <div class="badge">VVIP</div>
-                    <h3>Premium Plan</h3>
-                    <div class="price">$5.00<span>/mo</span></div>
-                    <ul class="benefit-list">
-                        <li><i class="fas fa-check"></i> High-Quality Audio</li>
-                        <li><i class="fas fa-check"></i> No Commands Limit</li>
-                        <li><i class="fas fa-check"></i> 24/7 Playback</li>
-                    </ul>
-                    <button class="order-btn-premium" onclick="openModal()">Order Now</button>
+        <section id="premium-section" class="section-padding">
+            <h2 class="title">Exclusive Features</h2>
+            <div class="premium-tabs-container">
+                <div class="price-container">
+                    <div class="price-card glass">
+                        <h3>Basic</h3>
+                        <div class="price">$2.99<span>/mo</span></div>
+                        <ul class="benefit-list">
+                            <li><i class="fas fa-headset"></i> High Quality Audio</li>
+                            <li><i class="fas fa-clock"></i> 24/7 Voice Support</li>
+                        </ul>
+                        <button class="order-btn-premium" onclick="openOrderModal('Basic', '$2.99')">Select Plan</button>
+                    </div>
+                    <div class="price-card glass premium-border">
+                        <div class="badge">Popular</div>
+                        <h3>Pro</h3>
+                        <div class="price">$5.99<span>/mo</span></div>
+                        <ul class="benefit-list">
+                            <li><i class="fas fa-bolt"></i> All Basic Features</li>
+                            <li><i class="fas fa-magic"></i> Custom Audio Filters</li>
+                            <li><i class="fas fa-infinity"></i> Unlimited Queue</li>
+                        </ul>
+                        <button class="order-btn-premium" onclick="openOrderModal('Pro', '$5.99')">Select Plan</button>
+                    </div>
+                    <div class="price-card glass">
+                        <h3>Custom</h3>
+                        <div class="price">$14.99<span>/mo</span></div>
+                        <ul class="benefit-list">
+                            <li><i class="fas fa-code"></i> Full Bot Branding</li>
+                            <li><i class="fas fa-palette"></i> Custom Name & Logo</li>
+                            <li><i class="fas fa-shield-virus"></i> Priority Support</li>
+                        </ul>
+                        <button class="order-btn-premium" onclick="openOrderModal('Full Customize', '$14.99')">Select Plan</button>
+                    </div>
                 </div>
             </div>
         </section>
-
-        <section id="faq" class="section-padding">
-            <h2 class="title">FAQ</h2>
-            <details class="glass"><summary>Activation Time?</summary><p>Orders are verified manually within 1-2 hours.</p></details>
-            <details class="glass"><summary>Payment methods?</summary><p>We accept LTC and USDT (TRC20).</p></details>
-        </section>
-
-        <footer class="dev-mark">
-            <p>Developed with by <span>Hridoy Hasan</span></p>
-        </footer>
     </div>
 
     <div id="orderModal" class="modal">
         <div class="modal-content glass">
             <span class="close" onclick="closeModal()">&times;</span>
-            <h2><i class="fas fa-shopping-cart"></i> Premium Order</h2>
+            <h2 id="modalTitle">Premium Checkout</h2>
             <form id="orderForm">
-                <input type="text" id="serverId" placeholder="Discord Server ID" required>
-                <input type="url" id="inviteLink" placeholder="Server Invite Link" required>
-                
+                <input type="text" id="serverId" placeholder="Enter Discord Server ID" required>
                 <div class="pay-methods">
-                    <div class="pay-item" id="ltcBtn">
-                        <img src="https://cryptologos.cc/logos/litecoin-ltc-logo.svg"> <span>LTC</span>
-                    </div>
-                    <div class="pay-item" id="usdtBtn">
-                        <img src="https://cryptologos.cc/logos/tether-usdt-logo.svg"> <span>USDT</span>
-                    </div>
+                    <div class="pay-item" id="ltcBtn"><img src="https://cryptologos.cc/logos/litecoin-ltc-logo.svg"> <span>LTC</span></div>
+                    <div class="pay-item" id="usdtBtn"><img src="https://cryptologos.cc/logos/tether-usdt-logo.svg"> <span>USDT</span></div>
                 </div>
-
                 <div id="addrBox" class="address-box glass" style="display:none;">
                     <p id="methodName"></p>
                     <code id="walletAddr"></code>
                 </div>
-                <button type="submit" class="final-btn">Submit via Discord</button>
+                <button type="submit" class="final-btn">Submit Order</button>
             </form>
         </div>
     </div>
 
+    <footer class="dev-mark">
+        <p>Copyright &copy; 2026 | Developed by <span>Hridoy Hasan</span></p>
+    </footer>
+
     <script type="module" src="script.js"></script>
 </body>
-</html>
-
+                            </html>
+                            
